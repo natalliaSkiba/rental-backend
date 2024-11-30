@@ -2,6 +2,7 @@ package com.openclassrooms.rental_backend.controller;
 
 import com.openclassrooms.rental_backend.DTO.LoginRequest;
 import com.openclassrooms.rental_backend.DTO.RegisterRequest;
+import com.openclassrooms.rental_backend.DTO.UserResponse;
 import com.openclassrooms.rental_backend.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,6 +39,18 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
         String token = authService.login(request);
         return ResponseEntity.ok(token);
+    }
+
+    @Operation(summary = "Get current user info", description = "Returns the current authenticated user's information")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "User information retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Token missing or invalid"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(@RequestHeader("Authorization") String token) {
+        UserResponse userResponse = authService.getCurrentUser(token);
+        return ResponseEntity.ok(userResponse);
     }
 }
 

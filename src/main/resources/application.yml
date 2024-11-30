@@ -8,11 +8,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      dialect: org.hibernate.dialect.MySQLDialect
-      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      ddl-auto: validate
     show-sql: true
+
 server:
-  port: 8080
+  port: 3001
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -24,3 +25,5 @@ logging:
       springframework:
         security:
           oauth2: TRACE
+file:
+  upload-dir: E:/BNP/Projects/Project3/rental-backend/images

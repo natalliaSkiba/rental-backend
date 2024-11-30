@@ -4,30 +4,33 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
 @Getter
-@Setter@EqualsAndHashCode
+@Setter
+@EqualsAndHashCode
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "USERS")
-public class User {
+@Entity
+@Table(name = "messages")
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String password;
+    @Column(name = "message", length = 2000, nullable = false)
+    private String content;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @ManyToOne
+    @JoinColumn(name = "rental_id", nullable = false)
+    private Rental rental;
+
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
 }

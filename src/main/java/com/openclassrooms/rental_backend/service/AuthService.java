@@ -6,6 +6,7 @@ import com.openclassrooms.rental_backend.DTO.UserResponse;
 import com.openclassrooms.rental_backend.config.JwtUtil;
 import com.openclassrooms.rental_backend.entity.User;
 import com.openclassrooms.rental_backend.exception.UserAlreadyExistsException;
+import com.openclassrooms.rental_backend.exception.UserNotFoundException;
 import com.openclassrooms.rental_backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +25,7 @@ public class AuthService {
 
     public void register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("Email is already in use");
+            throw new UserAlreadyExistsException("Email " + request.getEmail() + " is already in use");
         }
         User user = User.builder()
                 .email(request.getEmail())
@@ -47,5 +48,13 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         return jwtUtil.generateToken(authentication);
+    }
+
+    public UserResponse getCurrentUser(String token) {
+        String jwt = token.startsWith("Bearer ") ? token.substring(7) : token;
+        String email = jwtUtil.extractUsername(jwt);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        return getUserResponse(user);
     }
 }
