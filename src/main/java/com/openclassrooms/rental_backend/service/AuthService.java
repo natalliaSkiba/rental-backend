@@ -2,7 +2,7 @@ package com.openclassrooms.rental_backend.service;
 
 import com.openclassrooms.rental_backend.DTO.LoginRequest;
 import com.openclassrooms.rental_backend.DTO.RegisterRequest;
-import com.openclassrooms.rental_backend.DTO.UserResponse;
+import com.openclassrooms.rental_backend.DTO.UserResponseDTO;
 import com.openclassrooms.rental_backend.config.JwtUtil;
 import com.openclassrooms.rental_backend.entity.User;
 import com.openclassrooms.rental_backend.exception.UserAlreadyExistsException;
@@ -37,11 +37,24 @@ public class AuthService {
         return login(loginRequest);
     }
 
-    public UserResponse getUserResponse(User user) {
-        UserResponse response = new UserResponse();
-        response.setEmail(user.getEmail());
-        response.setName(user.getName());
-        return response;
+//    public UserResponseDTO getUserResponse(User user) {
+//        UserResponseDTO response = new UserResponseDTO();
+//        response.setId(user.getId());
+//        response.setEmail(user.getEmail());
+//        response.setName(user.getName());
+//        response.setCreatedAt(user.getCreatedAt());
+//        response.setUpdatedAt(user.getUpdatedAt());
+//
+//        return response;
+//    }
+    public UserResponseDTO toUserResponseDTO(User user) {
+        UserResponseDTO dto = new UserResponseDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setName(user.getName());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setUpdatedAt(user.getUpdatedAt());
+        return dto;
     }
 
     public String login(LoginRequest request) {
@@ -52,11 +65,11 @@ public class AuthService {
         return jwtUtil.generateToken(authentication);
     }
 
-    public UserResponse getCurrentUser(String token) {
+    public UserResponseDTO getCurrentUser(String token) {
         String jwt = token.startsWith("Bearer ") ? token.substring(7) : token;
         String email = jwtUtil.extractUsername(jwt);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        return getUserResponse(user);
+        return toUserResponseDTO(user);
     }
 }

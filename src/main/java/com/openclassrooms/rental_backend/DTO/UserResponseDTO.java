@@ -7,16 +7,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class RentalDTO {
-
+public class UserResponseDTO {
     private Integer id;
+    private String email;
     private String name;
-    private Double surface;
-    private Double price;
-    private String picture;
-    private String description;
-    @JsonProperty("owner_id")
-    private Integer ownerID;
     @JsonProperty("created_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private LocalDateTime createdAt;

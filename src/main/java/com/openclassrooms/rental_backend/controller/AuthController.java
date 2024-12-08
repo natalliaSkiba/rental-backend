@@ -3,7 +3,7 @@ package com.openclassrooms.rental_backend.controller;
 import com.nimbusds.oauth2.sdk.TokenResponse;
 import com.openclassrooms.rental_backend.DTO.LoginRequest;
 import com.openclassrooms.rental_backend.DTO.RegisterRequest;
-import com.openclassrooms.rental_backend.DTO.UserResponse;
+import com.openclassrooms.rental_backend.DTO.UserResponseDTO;
 import com.openclassrooms.rental_backend.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -80,7 +80,7 @@ public class AuthController {
                     description = "User information retrieved successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponse.class)
+                            schema = @Schema(implementation = UserResponseDTO.class)
                     )
             ),
             @ApiResponse(
@@ -93,9 +93,9 @@ public class AuthController {
             )
     })
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser(@RequestHeader("Authorization") String token, HttpServletRequest request) {
+    public ResponseEntity<UserResponseDTO> getCurrentUser(@RequestHeader("Authorization") String token, HttpServletRequest request) {
 
-        UserResponse userResponse = authService.getCurrentUser(token);
+        UserResponseDTO userResponse = authService.getCurrentUser(token);
         return ResponseEntity.ok(userResponse);
     }
 }

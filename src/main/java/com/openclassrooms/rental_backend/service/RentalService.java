@@ -2,8 +2,11 @@ package com.openclassrooms.rental_backend.service;
 
 import com.openclassrooms.rental_backend.DTO.RentalDTO;
 import com.openclassrooms.rental_backend.entity.Rental;
+import com.openclassrooms.rental_backend.entity.User;
 import com.openclassrooms.rental_backend.exception.RentalNotFoundException;
 import com.openclassrooms.rental_backend.repository.RentalRepository;
+import com.openclassrooms.rental_backend.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,13 +22,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-
+@Slf4j
 public class RentalService {
 
     @Value("${file.upload-dir}")
     private String uploadDir;
     @Autowired
     private RentalRepository rentalRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public String saveImage(MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
@@ -49,12 +54,13 @@ public class RentalService {
     }
 
     public void createRental(String name, Double surface, Double price, String description, Integer ownerId, String picturePath) {
+        User owner = userRepository.findByIdOrThrow(ownerId);
         Rental rental = new Rental();
         rental.setName(name);
         rental.setSurface(surface);
         rental.setPrice(price);
         rental.setDescription(description);
-        rental.setOwnerId(ownerId);
+        rental.setOwner(owner);
         rental.setPicture(picturePath);
         rental.setCreatedAt(LocalDateTime.now());
         rental.setUpdatedAt(LocalDateTime.now());
@@ -62,13 +68,15 @@ public class RentalService {
     }
 
     public void updateRental(Integer id, String name, Double surface, Double price, String description, Integer ownerId, String picturePath) {
+
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RentalNotFoundException("Rental not found"));
 
-        if (!rental.getOwnerId().equals(ownerId)) {
+        if (!rental.getOwner().getId().equals(ownerId)) {
+            log.info(""+ rental.getOwner().getId());
+            log.info("ownerID " +ownerId);
             throw new SecurityException("You are not the owner of this rental");
         }
-
         rental.setName(name);
         rental.setSurface(surface);
         rental.setPrice(price);
@@ -81,18 +89,6 @@ public class RentalService {
         rentalRepository.save(rental);
     }
 
-    public boolean deleteRental(Integer id, Integer ownerId) {
-        Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RentalNotFoundException("Rental not found"));
-
-        if (!rental.getOwnerId().equals(ownerId)) {
-            throw new SecurityException("You are not the owner of this rental");
-        }
-
-        rentalRepository.delete(rental);
-        return true;
-    }
-
     private RentalDTO convertToDTO(Rental rental) {
         RentalDTO dto = new RentalDTO();
         dto.setId(rental.getId());
@@ -101,6 +97,7 @@ public class RentalService {
         dto.setPrice(rental.getPrice());
         dto.setPicture(rental.getPicture());
         dto.setDescription(rental.getDescription());
+        dto.setOwnerID(rental.getOwner().getId());
         dto.setCreatedAt(rental.getCreatedAt());
         dto.setUpdatedAt(rental.getUpdatedAt());
         return dto;

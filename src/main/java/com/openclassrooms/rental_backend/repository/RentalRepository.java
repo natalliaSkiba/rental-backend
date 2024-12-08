@@ -13,6 +13,6 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
      */
     default Rental findByIdOrThrow(Integer rentalId) {
         return findById(rentalId)
-                .orElseThrow(() -> new IllegalArgumentException("Rental not found with ID: " + rentalId));
+                .orElseThrow(() -> new RentalNotFoundException("Rental not found with ID: " + rentalId));
     }
 }
