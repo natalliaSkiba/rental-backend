@@ -1,6 +1,7 @@
 package com.openclassrooms.rental_backend.repository;
 
 import com.openclassrooms.rental_backend.entity.User;
+import com.openclassrooms.rental_backend.exception.UserNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      */
     default User findByIdOrThrow(Integer userId) {
         return findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
     }
 }

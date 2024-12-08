@@ -1,10 +1,8 @@
 package com.openclassrooms.rental_backend.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class UserResponse {
     private String email;
     private String name;

@@ -23,7 +23,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public void register(RegisterRequest request) {
+    public String register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("Email " + request.getEmail() + " is already in use");
         }
@@ -33,6 +33,8 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         userRepository.save(user);
+        LoginRequest loginRequest = new LoginRequest(request.getEmail(), request.getPassword());
+        return login(loginRequest);
     }
 
     public UserResponse getUserResponse(User user) {

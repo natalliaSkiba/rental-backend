@@ -49,6 +49,5 @@ public class MessageController {
         if (user == null) {
             throw new IllegalArgumentException("User must not be null");
         }
-
     }
 }
