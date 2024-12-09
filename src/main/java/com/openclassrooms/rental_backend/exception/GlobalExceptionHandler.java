@@ -24,12 +24,11 @@ public class GlobalExceptionHandler {
 
         if (request.getRequestURI().startsWith("/api/auth")) {
             // Empty JSON for AuthController
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{}");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
         }
         // For other - empty body
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleInternalError(Exception ex) {
         //Return a 500 error
@@ -37,20 +36,17 @@ public class GlobalExceptionHandler {
         response.put("message", "Server error");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
-
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<Map<String, String>> handleBadCredentialsForAutn(BadCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "error"));
     }
-
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Map<String, Object>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
         // Return an empty JSON
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>());
     }
-
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleUserNotFound(UserNotFoundException ex) {
+    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException ex) {
         // Return an empty JSON
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>());
     }
@@ -66,5 +62,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IOException.class)
     public ResponseEntity<Map<String, String>> handleIOException(IOException ex) {
            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleValidateRequest(IllegalArgumentException ex) {
+        // Return an empty JSON
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>());
     }
 }

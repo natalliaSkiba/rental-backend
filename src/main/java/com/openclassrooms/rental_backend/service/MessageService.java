@@ -19,6 +19,7 @@ public class MessageService {
     private final UserRepository userRepository;
 
     public void createMessage(String messageContent, Integer userId, Integer rentalId) {
+        validateMessageContent(messageContent);
 
         // Using repository methods to find entities or throw exceptions
         Rental rental = rentalRepository.findByIdOrThrow(rentalId);
@@ -26,12 +27,22 @@ public class MessageService {
 
         Message message = new Message();
         message.setRental(rental);
-        message.setUserId(userId);
+        message.setUser(user);
         message.setContent(messageContent);
         message.setCreatedAt(LocalDateTime.now());
         message.setUpdatedAt(LocalDateTime.now());
 
         messageRepository.save(message);
     }
+
+    private void validateMessageContent(String messageContent) {
+        if (messageContent == null || messageContent.trim().isEmpty()) {
+            throw new IllegalArgumentException("Message content must not be empty");
+        }
+        if (messageContent.length() > 2000) {
+            throw new IllegalArgumentException("Message content exceeds the maximum length of 2000 characters");
+        }
+    }
+
 
 }

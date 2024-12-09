@@ -47,22 +47,13 @@ public class AuthController {
 
     @Operation(summary = "User login", description = "Authenticates a user and provides a JWT token")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Login successful, JWT token returned",
+            @ApiResponse(responseCode = "200", description = "Login successful, JWT token returned",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(example = "{ \"token\": \"jwt\" }"))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(example = "{ \"token\": \"jwt\" }")
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Invalid credentials",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(example = "{ \"message\": \"error\" }")
-                    )
-            )
+                            schema = @Schema(example = "{ \"message\": \"error\" }")))
     })
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
@@ -75,22 +66,12 @@ public class AuthController {
 
     @Operation(summary = "Get current user info", description = "Returns the current authenticated user's information")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "User information retrieved successfully",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponseDTO.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Unauthorized - Token is missing or invalid",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(example = "{ }")
-                    )
-            )
+            @ApiResponse(responseCode = "200", description = "User information retrieved successfully",
+                    content = @Content( mediaType = "application/json",
+                            schema = @Schema(implementation = UserResponseDTO.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Token is missing or invalid",
+                    content = @Content( mediaType = "application/json",
+                            schema = @Schema(example = "{ }")))
     })
     @GetMapping("/me")
     public ResponseEntity<UserResponseDTO> getCurrentUser(@RequestHeader("Authorization") String token, HttpServletRequest request) {

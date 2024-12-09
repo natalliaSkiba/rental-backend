@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -34,11 +33,8 @@ public class RentalController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalDTO.class))),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Unauthorized - Token is missing or invalid",
-                    content = @Content
-            )
+            @ApiResponse( responseCode = "401", description = "Unauthorized - Token is missing or invalid",
+                    content = @Content )
     })
     @GetMapping
     public ResponseEntity<Map<String, List<RentalDTO>>> getAllRentals() {
@@ -51,11 +47,8 @@ public class RentalController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved rental",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalDTO.class))),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Unauthorized - Token is missing or invalid",
-                    content = @Content
-            )
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Token is missing or invalid",
+                    content = @Content)
     })
     @GetMapping("/{id}")
     public ResponseEntity<RentalDTO> getRentalById(@PathVariable Integer id) {
@@ -65,19 +58,11 @@ public class RentalController {
 
     @Operation(summary = "Create a rental property", description = "Create a new rental property")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Rental property created successfully",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(example = "{ \"message\": \"Rental created!\" }")
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Unauthorized - Token is missing or invalid",
-                    content = @Content
-            )
+            @ApiResponse( responseCode = "200", description = "Rental property created successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(example = "{ \"message\": \"Rental created!\" }"))),
+            @ApiResponse( responseCode = "401",  description = "Unauthorized - Token is missing or invalid",
+                    content = @Content )
     })
     @PostMapping
     public ResponseEntity<?> createRental(
@@ -101,19 +86,11 @@ public class RentalController {
 
     @Operation(summary = "Update a rental property", description = "Update an existing rental property")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Rental property updated successfully",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(example = "{ \"message\": \"Rental updated!\" }")
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Unauthorized - Token is missing or invalid, You are not the owner of this rental",
-                    content = @Content
-            )
+            @ApiResponse(responseCode = "200",description = "Rental property updated successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(example = "{ \"message\": \"Rental updated!\" }"))),
+            @ApiResponse( responseCode = "401", description = "Unauthorized - Token is missing or invalid, You are not the owner of this rental",
+                    content = @Content )
     })
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(
