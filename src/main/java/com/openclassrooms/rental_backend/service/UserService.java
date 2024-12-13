@@ -1,5 +1,6 @@
 package com.openclassrooms.rental_backend.service;
 
+import com.openclassrooms.rental_backend.DTO.UserResponseDTO;
 import com.openclassrooms.rental_backend.entity.User;
 
 import com.openclassrooms.rental_backend.exception.UserNotFoundException;
@@ -12,14 +13,16 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final  AuthService authService;
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(()-> new UserNotFoundException("User not found"));
     }
 
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public UserResponseDTO getUserById(Integer id) {
+        User user = userRepository.findByIdOrThrow(id);
+        return authService.toUserResponseDTO(user);
     }
 
 }

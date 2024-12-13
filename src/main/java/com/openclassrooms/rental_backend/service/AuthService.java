@@ -37,16 +37,7 @@ public class AuthService {
         return login(loginRequest);
     }
 
-//    public UserResponseDTO getUserResponse(User user) {
-//        UserResponseDTO response = new UserResponseDTO();
-//        response.setId(user.getId());
-//        response.setEmail(user.getEmail());
-//        response.setName(user.getName());
-//        response.setCreatedAt(user.getCreatedAt());
-//        response.setUpdatedAt(user.getUpdatedAt());
-//
-//        return response;
-//    }
+
     public UserResponseDTO toUserResponseDTO(User user) {
         UserResponseDTO dto = new UserResponseDTO();
         dto.setId(user.getId());

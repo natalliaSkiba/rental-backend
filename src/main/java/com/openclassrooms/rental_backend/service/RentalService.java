@@ -27,6 +27,9 @@ public class RentalService {
 
     @Value("${file.upload-dir}")
     private String uploadDir;
+
+    @Value("${file.base-url}")
+    private String baseUrl;
     @Autowired
     private RentalRepository rentalRepository;
     @Autowired
@@ -40,7 +43,7 @@ public class RentalService {
         String fileName = file.getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        return fileName;
+        return baseUrl + fileName;
     }
 
     public List<RentalDTO> getAllRentals() {

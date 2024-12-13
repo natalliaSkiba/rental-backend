@@ -26,4 +26,5 @@ logging:
         security:
           oauth2: TRACE
 file:
-  upload-dir: E:/BNP/Projects/Project3/rental-backend/images
+  upload-dir: src/main/resources/static/uploads/
+  base-url: http://localhost:3001/uploads/
