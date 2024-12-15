@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/rental_project_db
+    username: tgs
+    password: tgs
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      ddl-auto: validate
+    show-sql: true
+
+server:
+  port: 3001
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          oauth2: TRACE
+file:
+  upload-dir: src/main/resources/static/uploads/
+  base-url: http://localhost:3001/uploads/
