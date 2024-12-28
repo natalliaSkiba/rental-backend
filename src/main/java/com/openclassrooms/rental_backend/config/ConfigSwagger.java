@@ -17,10 +17,10 @@ public class ConfigSwagger {
         return new OpenAPI()
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("NOVA METRICS REST API")
-                        .description("REST API DOCUMENTATION OF NOVA METRICS APPLICATION.")
+                .info(new Info().title("RENTAL-BACKEND REST API")
+                        .description("REST API DOCUMENTATION OF RENTAL-BACKEND APPLICATION.")
                         .version("1.0")
-                        .contact(new Contact().name("GHAZI BOUZAZI")));
+                        .contact(new Contact().name("Natallia SKIBA")));
     }
 
     private SecurityScheme createAPIKeyScheme() {
