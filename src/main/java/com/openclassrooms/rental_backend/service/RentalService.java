@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,10 +42,12 @@ public class RentalService {
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
-        String fileName = file.getOriginalFilename();
+        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = UUID.randomUUID().toString() + "_" + originalFileName;
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        return baseUrl + fileName;
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        return baseUrl + fileName + "?t=" + timestamp;
     }
 
     public List<RentalDTO> getAllRentals() {

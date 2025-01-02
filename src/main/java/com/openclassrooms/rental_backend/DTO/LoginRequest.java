@@ -1,9 +1,8 @@
 package com.openclassrooms.rental_backend.DTO;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -11,5 +10,4 @@ import java.time.LocalDateTime;
 public class LoginRequest {
     private String email;
     private String password;
-
 }

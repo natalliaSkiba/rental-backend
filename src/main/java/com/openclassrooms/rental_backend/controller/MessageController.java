@@ -42,13 +42,10 @@ public class MessageController {
     public ResponseEntity<?> createMessage(
             @RequestBody MessageRequest request,
             @AuthenticationPrincipal Jwt jwt) {
-
         String email = jwt.getClaimAsString("sub");
         messageService.createMessage(request.getMessage(), request.getUserId(), request.getRentalId());
         Map<String, String> response = new HashMap<>();
         response.put("message", "Message send with success");
         return ResponseEntity.ok(response);
     }
-
-
 }
