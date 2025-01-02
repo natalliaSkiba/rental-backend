@@ -2,7 +2,6 @@ package com.openclassrooms.rental_backend.service;
 
 import com.openclassrooms.rental_backend.DTO.UserResponseDTO;
 import com.openclassrooms.rental_backend.entity.User;
-
 import com.openclassrooms.rental_backend.exception.UserNotFoundException;
 import com.openclassrooms.rental_backend.repository.UserRepository;
 import lombok.AllArgsConstructor;

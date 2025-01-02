@@ -1,6 +1,5 @@
 package com.openclassrooms.rental_backend.controller;
 
-import com.openclassrooms.rental_backend.DTO.RentalDTO;
 import com.openclassrooms.rental_backend.DTO.UserResponseDTO;
 import com.openclassrooms.rental_backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
