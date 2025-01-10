@@ -3,6 +3,7 @@ package com.openclassrooms.rental_backend.config;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -20,10 +21,19 @@ import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class SecurityConfig {
-    private final String jwtKey = "12345678901234567890123456789012";
+
+   private final String jwtKey;
+
+    public SecurityConfig(Environment environment) {
+        this.jwtKey = environment.getProperty("JWT_KEY");
+        if (this.jwtKey == null || this.jwtKey.isEmpty()) {
+            throw new IllegalStateException("JWT_KEY environment variable is not set or is empty");
+        }
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -60,5 +70,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 }
